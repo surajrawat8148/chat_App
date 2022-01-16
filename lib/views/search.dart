@@ -4,32 +4,46 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class SearchScreen extends StatefulWidget {
+  const SearchScreen({Key? key}) : super(key: key);
+
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-
   DatabaseMethod databaseMethod = DatabaseMethod();
   TextEditingController searchTextEditingController = TextEditingController();
 
   late QuerySnapshot searchSnapshot;
 
-  initiateSearch(){
-    databaseMethod.getUserByUsername(searchTextEditingController.text).then((val) {
-      searchSnapshot = val;
-      }
+  initiateSearch() {
+    databaseMethod
+        .getUserByUsername(searchTextEditingController.text)
+        .then((val) {
+      setState(() {
+        searchSnapshot = val;
+      });
+    });
+  }
 
   Widget searchList() {
-    return ListView.builder(
-      itemCount: searchSnapshot.documents.length ,
-      itemBuilder: (context, index ){
-        return SearchTile(
-          userName: searchSnapshot.documents[index].data["name"],
-          userEmail: searchSnapshot.documents[index].data["email"],
-        );
-      }
-    );
+    // ignore: unnecessary_null_comparison
+    return searchSnapshot != null
+        ? ListView.builder(
+            itemCount: searchSnapshot.docs.length,
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              return SearchTile(
+                userName: searchSnapshot.docs[index]["email"],
+                userEmail: searchSnapshot.docs[index]["email"],
+              );
+            })
+        : Container();
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -75,7 +89,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   )
                 ],
               ),
-            )
+            ),
             searchList()
           ],
         ),
@@ -84,11 +98,11 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 }
 
-
 class SearchTile extends StatelessWidget {
   final String userName;
   final String userEmail;
-  SearchTile({required this.userName,required this.userEmail});
+  // ignore: use_key_in_widget_constructors
+  const SearchTile({required this.userName, required this.userEmail});
 
   @override
   Widget build(BuildContext context) {
@@ -97,28 +111,25 @@ class SearchTile extends StatelessWidget {
         children: [
           Column(
             children: [
-              Text(userName, style: simpleTextFieldStyle(),),
-              Text(userEmail, style: simpleTextFieldStyle(),),
+              Text(
+                userName,
+                style: simpleTextFieldStyle(),
+              ),
+              Text(
+                userEmail,
+                style: simpleTextFieldStyle(),
+              ),
             ],
           ),
           const Spacer(),
           Container(
             decoration: BoxDecoration(
-              color: Colors.blue,
-              borderRadius: BorderRadius.circular(30)
-            ),
+                color: Colors.blue, borderRadius: BorderRadius.circular(30)),
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: const Text("Message"),
           )
         ],
       ),
     );
-  }
-}
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
   }
 }

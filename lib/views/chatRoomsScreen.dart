@@ -28,7 +28,8 @@ class _ChatRoomState extends State<ChatRoom> {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const Authenticate()));
+                    builder: (context) => const Authenticate(),
+                  ));
             },
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -43,7 +44,7 @@ class _ChatRoomState extends State<ChatRoom> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => SearchScreen(),
+              builder: (context) => const SearchScreen(),
             ),
           );
         },
