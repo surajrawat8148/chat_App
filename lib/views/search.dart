@@ -14,7 +14,7 @@ class _SearchScreenState extends State<SearchScreen> {
   DatabaseMethod databaseMethod = DatabaseMethod();
   TextEditingController searchTextEditingController = TextEditingController();
 
-  late QuerySnapshot searchSnapshot;
+  QuerySnapshot? searchSnapshot;
 
   initiateSearch() {
     databaseMethod
@@ -30,12 +30,12 @@ class _SearchScreenState extends State<SearchScreen> {
     // ignore: unnecessary_null_comparison
     return searchSnapshot != null
         ? ListView.builder(
-            itemCount: searchSnapshot.docs.length,
+            itemCount: searchSnapshot?.docs.length,
             shrinkWrap: true,
             itemBuilder: (context, index) {
               return SearchTile(
-                userName: searchSnapshot.docs[index]["email"],
-                userEmail: searchSnapshot.docs[index]["email"],
+                userName: searchSnapshot?.docs[index]["name"],
+                userEmail: searchSnapshot?.docs[index]["email"],
               );
             })
         : Container();

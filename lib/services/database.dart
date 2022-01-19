@@ -9,6 +9,8 @@ class DatabaseMethod {
   }
 
   uploadUserInfo(userMap) {
-    FirebaseFirestore.instance.collection("users").add(userMap);
+    FirebaseFirestore.instance.collection("users").add(userMap).catchError((e) {
+      print(e.toString());
+    });
   }
 }
