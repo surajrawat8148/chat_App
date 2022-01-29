@@ -1,3 +1,4 @@
+import 'package:chat_app/helper/helperfunction.dart';
 import 'package:chat_app/services/auth.dart';
 import 'package:chat_app/services/database.dart';
 import 'package:chat_app/views/chatRoomsScreen.dart';
@@ -17,6 +18,7 @@ class _SignUpState extends State<SignUp> {
 
   AuthMethods authMethods = AuthMethods();
   DatabaseMethod databaseMethod = DatabaseMethod();
+  HelperFunctions helperFunctions = HelperFunctions();
 
   final formKeys = GlobalKey<FormState>();
   TextEditingController userNameTextEditingController = TextEditingController();
@@ -29,6 +31,12 @@ class _SignUpState extends State<SignUp> {
         "name": userNameTextEditingController.text,
         "email": emailTextEditingController.text,
       };
+
+      HelperFunctions.saveUserEmailSharedPreference(
+          emailTextEditingController.text);
+      HelperFunctions.saveUserNameSharedPreference(
+          userNameTextEditingController.text);
+
       setState(() {
         isloading = true;
       });
@@ -38,6 +46,9 @@ class _SignUpState extends State<SignUp> {
               passwordTextEditingController.text)
           .then((val) {
         databaseMethod.uploadUserInfo(userInfoMap);
+
+        HelperFunctions.saveUserLoggedInSharedPreference(true);
+
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(

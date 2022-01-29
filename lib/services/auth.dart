@@ -8,7 +8,7 @@ class AuthMethods {
 // CONDITION ? TRUE : FALSE
   UserModel? _userFromFirebaseUser(User user) {
     // ignore: unnecessary_null_comparison
-    return user != null ? UserModel(userId : user.uid) : null;
+    return user != null ? UserModel(userId: user.uid) : null;
   }
 
   Future signInWithEmailAndPassword(String email, String password) async {
